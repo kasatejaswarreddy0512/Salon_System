@@ -1,3 +1,24 @@
 spring:
   application:
     name: service-offering
+
+  datasource:
+    url: jdbc:mysql://localhost:3306/salon
+    username: root
+    password: Teja@123
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: update
+    database-platform: org.hibernate.dialect.MySQLDialect
+
+server:
+  port: 8084
+
+# eureka:
+#   client:
+#     fetch-registry: true
+#     register-with-eureka: true
+#     service-url:
+#       defaultZone: http://localhost:8090/eureka/

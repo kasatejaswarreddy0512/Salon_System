@@ -1,4 +1,4 @@
-package com.ktsr.category.service.controller;
+package com.ktsr.service.offering.controller;
 
 
 import org.springframework.http.ResponseEntity;
@@ -10,6 +10,6 @@ public class HomeController {
 
     @GetMapping
     public ResponseEntity<String> home() {
-        return ResponseEntity.ok("Category Microservices for Salon Booking System");
+        return ResponseEntity.ok("Service Offering Microservices for Salon Booking System");
     }
 }

@@ -35,6 +35,4 @@ public class SalonServiceOfferingController {
         return ResponseEntity.ok().body(offering);
     }
 
-
-//    5:10
 }

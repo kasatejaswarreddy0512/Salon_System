@@ -1,9 +1,7 @@
 package com.ktsr.DTO;
 
 
-import com.ktsr.entity.BookingStatus;
-import jakarta.persistence.Column;
-import jakarta.persistence.ElementCollection;
+//import com.ktsr.entity.BookingStatus;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -21,6 +19,6 @@ public class BookingDTO {
     private LocalDateTime startTime;
     private LocalDateTime endTime;
     private Set<Long> serviceIds;
-    private BookingStatus status= BookingStatus.PENDING;
+//    private BookingStatus status= BookingStatus.PENDING;
     private double totalPrices;
 }

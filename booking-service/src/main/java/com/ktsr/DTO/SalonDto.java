@@ -1,4 +1,4 @@
-package com.ktsr.service.offering.DTO;
+package com.ktsr.DTO;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

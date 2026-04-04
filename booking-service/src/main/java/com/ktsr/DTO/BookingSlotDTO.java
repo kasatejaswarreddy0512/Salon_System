@@ -1,4 +1,12 @@
 package com.ktsr.DTO;
 
-public class SlotDTO {
+import lombok.Data;
+
+import java.time.LocalDateTime;
+
+@Data
+public class BookingSlotDTO {
+    private LocalDateTime startTime;
+    private LocalDateTime endTime;
+
 }

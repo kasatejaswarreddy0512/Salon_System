@@ -1,6 +1,5 @@
-package com.ktsr.service.offering.DTO;
+package com.ktsr.DTO;
 
-import jakarta.persistence.Column;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

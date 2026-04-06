@@ -1,0 +1,226 @@
+services:
+
+  salon:
+    image: mysql
+    container_name: salon
+    ports:
+      - "3301:3306"
+    healthcheck:
+      test: ["CMD","mysqladmin","ping","-h","localhost"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: salon
+    networks:
+      - kasatejaswarreddy1999
+
+
+  eurekaserver:
+    image: "kasatejaswarreddy1999/salon-eureka-server:v1"
+    ports:
+      - "8090:8090"
+    healthcheck:
+      test: ["CMD-SHELL","curl --fail --silent eurekaserver:8090/actuator/health,readiness | grep UP || exist 1"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    container_name: eurekaserver
+
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - kasatejaswarreddy1999
+
+  user:
+    image: "kasatejaswarreddy1999/salon-user:v1"
+    ports:
+      - "8081:8081"
+    healthcheck:
+      test: "curl --fail --silent user:8081/actuator/health,readiness | grep UP || exist 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    container_name: user
+    depends_on:
+      salon:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "user-service"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://salon:3306/salon"
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8090/eureka/
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - kasatejaswarreddy1999
+
+  booking:
+    image: "kasatejaswarreddy1999/salon-booking:v1"
+    ports:
+      - "8085:8085"
+    healthcheck:
+      test: "curl --fail --silent booking:8085/actuator/health,readiness | grep UP || exist 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    container_name: booking
+    depends_on:
+      salon:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "booking-service"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://salon:3306/salon"
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8090/eureka/
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - kasatejaswarreddy1999
+
+  salonservice:
+    image: "kasatejaswarreddy1999/salon-salon:v1"
+    ports:
+      - "8082:8082"
+    healthcheck:
+      test: "curl --fail --silent salonservice:8082/actuator/health,readiness | grep UP || exist 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    container_name: salonservice
+    depends_on:
+      salon:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "salon-service"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://salon:3306/salon"
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8090/eureka/
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - kasatejaswarreddy1999
+
+  category:
+    image: "kasatejaswarreddy1999/salon-category:v1"
+    ports:
+      - "8083:8083"
+    healthcheck:
+      test: "curl --fail --silent category:8083/actuator/health,readiness | grep UP || exist 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    container_name: category
+    depends_on:
+      salon:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "category-service"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://salon:3306/salon"
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8090/eureka/
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - kasatejaswarreddy1999
+
+  serviceoffering:
+    image: "kasatejaswarreddy1999/salon-services-offering:v1"
+    ports:
+      - "8084:8084"
+    healthcheck:
+      test: "curl --fail --silent serviceoffering:8084/actuator/health,readiness | grep UP || exist 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    container_name: serviceoffering
+    depends_on:
+      salon:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "service-offering"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://salon:3306/salon"
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8090/eureka/
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - kasatejaswarreddy1999
+
+  payment:
+    image: "kasatejaswarreddy1999/salon-payment:v1"
+    ports:
+      - "8086:8086"
+    healthcheck:
+      test: "curl --fail --silent payment:8086/actuator/health,readiness | grep UP || exist 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    container_name: payment
+    depends_on:
+      salon:
+        condition: service_healthy
+    environment:
+      SPRING_APPLICATION_NAME: "payment-service"
+      SPRING_DATASOURCE_URL: "jdbc:mysql://salon:3306/salon"
+      SPRING_DATASOURCE_USERNAME: root
+      SPRING_DATASOURCE_PASSWORD: root
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8090/eureka/
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - kasatejaswarreddy1999
+
+  gatewayserver:
+    image: "kasatejaswarreddy1999/salon-api-gatway:v1"
+    ports:
+      - "9090:9090"
+    healthcheck:
+      test: "curl --fail --silent gatewayserver:9090/actuator/health,readiness | grep UP || exist 1"
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 10s
+    container_name: gatewayserver
+    environment:
+      SPRING_APPLICATION_NAME: "api-gateway"
+      EUREKA_CLIENT_SERVICEURL_DEFAULTZONE: http://eurekaserver:8090/eureka/
+    deploy:
+      resources:
+        limits:
+          memory: 700m
+    networks:
+      - kasatejaswarreddy1999
+
+
+networks:
+  kasatejaswarreddy1999:
+    driver: "bridge"

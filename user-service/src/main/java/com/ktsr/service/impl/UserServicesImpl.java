@@ -1,7 +1,9 @@
 package com.ktsr.service.impl;
 
+import com.ktsr.DTO.KeycloakUserDto;
 import com.ktsr.entity.User;
 import com.ktsr.repository.UserRepository;
+import com.ktsr.service.KeyCloakService;
 import com.ktsr.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -15,6 +17,7 @@ import java.util.Optional;
 public class UserServicesImpl implements UserService {
 
     private final UserRepository userRepository;
+    private final KeyCloakService keyCloakService;
 
     @Override
     public User createUser(User user) {
@@ -58,5 +61,11 @@ public class UserServicesImpl implements UserService {
         }
         userRepository.deleteById(id);
     return "User Deleted Successfully....👌";
+    }
+
+    @Override
+    public User getUserFromJwt(String jwt) throws Exception {
+        KeycloakUserDto userDto=keyCloakService.fetchUserProfileBtJwt(jwt);
+        return userRepository.findByEmail(userDto.getEmail());
     }
 }

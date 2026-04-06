@@ -12,4 +12,7 @@ public interface UserService {
     User updateUser(User user, Long id);
     String deleteUser(Long id);
 
+    User getUserFromJwt(String jwt) throws Exception;
+
+
 }

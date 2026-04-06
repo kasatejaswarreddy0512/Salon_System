@@ -1,5 +1,6 @@
 package com.ktsr.entity;
 
+import com.ktsr.DTO.UserRole;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.NotBlank;
 import lombok.AllArgsConstructor;
@@ -23,18 +24,21 @@ public class User {
     @NotBlank(message = "Name is mandatory")
     private String fullName;
 
+    @NotBlank(message = "username is mandatory")
+    private String username;
+
     @NotBlank(message = "Email is mandatory")
     @Column(unique = true)
     private String email;
     @NotBlank(message = "Password is mandatory")
     private String password;
 
-    @NotBlank(message = "Phone number is mandatory")
+
     @Column(unique = true)
     private String phoneNumber;
 
-    @NotBlank(message = "Role is mandatory")
-    private String role;
+    @Column(nullable = false)
+    private UserRole role;
 
     @CreationTimestamp
     private LocalDateTime createdAt;

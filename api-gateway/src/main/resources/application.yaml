@@ -1,3 +1,71 @@
 spring:
   application:
     name: api-gateway
+
+  main:
+    web-application-type: reactive
+
+  cloud:
+    gateway:
+
+      routes:
+        # User Service
+        - id: user-service
+          uri: lb://user-service
+          predicates:
+            - Path=/api/users/**,/api/admin/users/**,/auth/**,/users/**
+
+        # Salon Service
+        - id: salon-service
+          uri: lb://salon-service
+          predicates:
+            - Path=/api/salon/**
+
+        # Booking Service
+        - id: booking-service
+          uri: lb://booking-service
+          predicates:
+            - Path=/api/bookings/**
+
+        # Category Service
+        - id: category-service
+          uri: lb://category-service
+          predicates:
+            - Path=/api/category/**
+
+        # Service Offering
+        - id: service-offering
+          uri: lb://service-offering
+          predicates:
+            - Path=/api/service-offering/**
+
+        # Payment Service
+        - id: payment-service
+          uri: lb://payment-service
+          predicates:
+            - Path=/api/payments/**
+
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
+
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "*"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+
+      discovery:
+        locator:
+          enabled: true
+          lower-case-service-id: true
+
+server:
+  port: 9090
+
+eureka:
+  client:
+    fetch-registry: true
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8090/eureka/

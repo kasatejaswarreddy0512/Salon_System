@@ -63,9 +63,17 @@ public class UserServicesImpl implements UserService {
     return "User Deleted Successfully....👌";
     }
 
+//    @Override
+//    public User getUserFromJwt(String jwt) throws Exception {
+//        KeycloakUserDto userDto=keyCloakService.fetchUserProfileByJwt(jwt);
+//        return userRepository.findByEmail(userDto.getEmail());
+//    }
+
     @Override
     public User getUserFromJwt(String jwt) throws Exception {
-        KeycloakUserDto userDto=keyCloakService.fetchUserProfileBtJwt(jwt);
-        return userRepository.findByEmail(userDto.getEmail());
+
+        KeycloakUserDto userDto = keyCloakService.fetchUserProfileByJwt(jwt);
+        User user = userRepository.findByEmail(userDto.getEmail());
+        return user;
     }
 }

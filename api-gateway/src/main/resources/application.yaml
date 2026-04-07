@@ -7,43 +7,42 @@ spring:
 
   cloud:
     gateway:
-
       routes:
-        # User Service
+
         - id: user-service
           uri: lb://user-service
           predicates:
             - Path=/api/users/**,/api/admin/users/**,/auth/**,/users/**
 
-        # Salon Service
         - id: salon-service
           uri: lb://salon-service
           predicates:
             - Path=/api/salon/**
 
-        # Booking Service
         - id: booking-service
           uri: lb://booking-service
           predicates:
             - Path=/api/bookings/**
 
-        # Category Service
         - id: category-service
           uri: lb://category-service
           predicates:
             - Path=/api/category/**
 
-        # Service Offering
         - id: service-offering
           uri: lb://service-offering
           predicates:
             - Path=/api/service-offering/**
 
-        # Payment Service
         - id: payment-service
           uri: lb://payment-service
           predicates:
             - Path=/api/payments/**
+
+        - id: notifications
+          uri: lb://notifications
+          predicates:
+            - Path=/api/notifications/**
 
       default-filters:
         - DedupeResponseHeader=Access-Control-Allow-Origin Access-Control-Allow-Credentials, RETAIN_UNIQUE
@@ -60,10 +59,18 @@ spring:
           enabled: true
           lower-case-service-id: true
 
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          jwk-set-uri: http://localhost:8080/realms/master/protocol/openid-connect/certs
+
 server:
   port: 9090
 
 eureka:
+  instance:
+    prefer-ip-address: true
   client:
     fetch-registry: true
     register-with-eureka: true

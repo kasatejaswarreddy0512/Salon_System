@@ -1,4 +1,4 @@
-package com.ktsr.entity;
+package com.ktsr.DTO;
 
 public enum BookingStatus {
     PENDING,

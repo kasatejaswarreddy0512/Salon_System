@@ -16,6 +16,7 @@ public class ServiceOfferingController {
 
     private final ServiceOfferingService serviceOfferingService;
 
+
     @GetMapping("/{id}")
     public ResponseEntity<ServiceOffering> getServiceOfferingById(@PathVariable Long id){
         ServiceOffering serviceOffering = serviceOfferingService.getServiceOfferingById(id);

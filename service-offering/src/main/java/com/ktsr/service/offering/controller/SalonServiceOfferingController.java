@@ -2,8 +2,12 @@ package com.ktsr.service.offering.controller;
 
 import com.ktsr.service.offering.DTO.CategoryDto;
 import com.ktsr.service.offering.DTO.SalonDto;
+import com.ktsr.service.offering.DTO.ServiceDTO;
 import com.ktsr.service.offering.entity.ServiceOffering;
 import com.ktsr.service.offering.service.ServiceOfferingService;
+import com.ktsr.service.offering.service.client.CategoryFeignClient;
+import com.ktsr.service.offering.service.client.SalonFeignClient;
+import com.ktsr.service.offering.service.client.UserFeignClient;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -14,17 +18,24 @@ import org.springframework.web.bind.annotation.*;
 public class SalonServiceOfferingController {
 
     private final ServiceOfferingService serviceOfferingService;
+    private final UserFeignClient  userFeignClient;
+    private final SalonFeignClient salonFeignClient;
+    private final CategoryFeignClient categoryFeignClient;
 
     @PostMapping
     public ResponseEntity<ServiceOffering> createServiceOffering(
-            @RequestBody ServiceOffering serviceOffering){
-        SalonDto  salonDto = new SalonDto();
-        salonDto.setId(1L);
-        CategoryDto  categoryDto = new CategoryDto();
-        categoryDto.setId(1L);
+            @RequestBody ServiceDTO serviceDTO,
+            @RequestHeader("Authorization") String jwt) throws Exception {
 
-        ServiceOffering offering = serviceOfferingService.createServiceOffering(serviceOffering, salonDto, categoryDto);
-        return ResponseEntity.ok().body(offering);
+        SalonDto  salonDto = salonFeignClient.getSalonByOwnerId(jwt).getBody();
+
+        CategoryDto  categoryDto = categoryFeignClient.getCategoryByIdAndSalon(serviceDTO.getId(),
+                salonDto.getId()).getBody();
+
+        ServiceOffering offering = serviceOfferingService.createServiceOffering(serviceDTO,
+                salonDto, categoryDto);
+
+        return ResponseEntity.ok(offering);
     }
 
     @PutMapping("/{id}")

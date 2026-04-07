@@ -2,6 +2,7 @@ package com.ktsr.service.offering.service;
 
 import com.ktsr.service.offering.DTO.CategoryDto;
 import com.ktsr.service.offering.DTO.SalonDto;
+import com.ktsr.service.offering.DTO.ServiceDTO;
 import com.ktsr.service.offering.entity.ServiceOffering;
 import jakarta.persistence.SecondaryTable;
 
@@ -10,7 +11,7 @@ import java.util.Set;
 
 public interface ServiceOfferingService {
 
-    ServiceOffering createServiceOffering(ServiceOffering serviceOffering,
+    ServiceOffering createServiceOffering(ServiceDTO serviceDTO,
                                           SalonDto salonDto,
                                           CategoryDto categoryDto);
 

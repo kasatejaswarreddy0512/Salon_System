@@ -2,6 +2,7 @@ package com.ktsr.service.offering.service.impl;
 
 import com.ktsr.service.offering.DTO.CategoryDto;
 import com.ktsr.service.offering.DTO.SalonDto;
+import com.ktsr.service.offering.DTO.ServiceDTO;
 import com.ktsr.service.offering.entity.ServiceOffering;
 import com.ktsr.service.offering.repository.ServiceOfferingRepository;
 import com.ktsr.service.offering.service.ServiceOfferingService;
@@ -21,15 +22,15 @@ public class ServiceOfferingServiceImpl implements ServiceOfferingService {
     private final ServiceOfferingRepository serviceOfferingRepository;
 
     @Override
-    public ServiceOffering createServiceOffering(ServiceOffering serviceOffering, SalonDto salonDto, CategoryDto categoryDto) {
+    public ServiceOffering createServiceOffering(ServiceDTO serviceDTO, SalonDto salonDto, CategoryDto categoryDto) {
         ServiceOffering offering = new ServiceOffering();
-        offering.setName(serviceOffering.getName());
-        offering.setDescription(serviceOffering.getDescription());
-        offering.setSalonId(serviceOffering.getSalonId());
-        offering.setCategoryId(serviceOffering.getCategoryId());
-        offering.setImage(serviceOffering.getImage());
-        offering.setPrice(serviceOffering.getPrice());
-        offering.setDuration(serviceOffering.getDuration());
+        offering.setName(serviceDTO.getName());
+        offering.setDescription(serviceDTO.getDescription());
+        offering.setSalonId(serviceDTO.getSalonId());
+        offering.setCategoryId(serviceDTO.getCategoryId());
+        offering.setImage(serviceDTO.getImage());
+        offering.setPrice(serviceDTO.getPrice());
+        offering.setDuration(serviceDTO.getDuration());
 
         return serviceOfferingRepository.save(offering);
     }

@@ -1,6 +1,7 @@
-package com.ktsr.service.offering.service.client;
+package com.ktsr.service.client;
 
-import com.ktsr.service.offering.DTO.CategoryDto;
+
+import com.ktsr.DTO.CategoryDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,6 +15,6 @@ public interface CategoryFeignClient {
 
     @GetMapping("/api/category/salon-owner/salon/{salonId}/category/{id}")
     public ResponseEntity<CategoryDto> getCategoryByIdAndSalon(@PathVariable Long id,
-                                                            @PathVariable Long salonId);
+                                                               @PathVariable Long salonId);
 
 }

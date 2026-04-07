@@ -41,10 +41,12 @@ public class PaymentServiceImpl implements PaymentService {
                                            BookingDTO bookingDTO,
                                            PaymentMethod paymentMethod) throws RazorpayException, StripeException {
         Double amount=bookingDTO.getTotalPrices();
+
         PaymentOrder paymentOrder = new PaymentOrder();
         paymentOrder.setAmount(amount);
         paymentOrder.setBookingId(bookingDTO.getId());
         paymentOrder.setSalonId(bookingDTO.getSalonId());
+        paymentOrder.setUserId(userDto.getId());
         PaymentOrder savedPaymentOrder = paymentOrderRepository.save(paymentOrder);
 
         PaymentLinkResponse paymentLinkResponse = new PaymentLinkResponse();
@@ -159,7 +161,7 @@ public class PaymentServiceImpl implements PaymentService {
                 String status=payment.get("status");
 
                 if(status.equals("captured")){
-                    // will produce kafka event
+                    // will produce kafka event driven arcitechture
                     paymentOrder.setStatus(PaymentOrderStaus.SUCCESS);
                     paymentOrderRepository.save(paymentOrder);
                     return true;

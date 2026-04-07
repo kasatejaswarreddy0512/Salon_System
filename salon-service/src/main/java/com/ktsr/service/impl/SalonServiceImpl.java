@@ -51,6 +51,9 @@ public class SalonServiceImpl implements SalonService {
 //    @Override
 //    public Salon updateSalon(SalonDto salon, UserDto user, Long salonId) {
 //        Salon existingSalon = salonRepository.findById(salonId).orElseThrow(() -> new RuntimeException("Salon Not Found"));
+//          if(!salonDto.getOwnerId().equals(user.getId()){
+//              throw new RuntimeException("You don't have permission to access this salon");
+//          }
 //        if (existingSalon != null) {
 //            existingSalon.setName(salon.getName());
 //            existingSalon.setEmail(salon.getEmail());
@@ -76,7 +79,7 @@ public class SalonServiceImpl implements SalonService {
 
         try {
             if (!existingSalon.getOwnerId().equals(user.getId())) {
-                throw new RuntimeException("Unauthorized to update this salon");
+                throw new RuntimeException("You don't have permissions to update this salon");
             }
             JsonObject existingSalonJson = gson.toJsonTree(existingSalon).getAsJsonObject();
             JsonObject updates = gson.fromJson(updateJson, JsonObject.class);

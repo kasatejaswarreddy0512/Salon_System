@@ -36,4 +36,7 @@ public class CategoryController {
         categoryService.deleteCategoryById(id,salonId);
         return ResponseEntity.ok().body("Deleted Category Successfully...!");
     }
+
+
+
 }

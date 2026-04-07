@@ -1,6 +1,6 @@
-package com.ktsr.service.offering.service.client;
+package com.ktsr.category.service.service.client;
 
-import com.ktsr.service.offering.DTO.SalonDto;
+import com.ktsr.category.service.DTO.SalonDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -13,6 +13,5 @@ public interface SalonFeignClient {
     public ResponseEntity<SalonDto> getSalon(Long id);
 
     @GetMapping("/api/salon/owner")
-    public ResponseEntity<SalonDto> getSalonByOwnerId(
-            @RequestHeader("Authorization") String jwt) throws Exception;
+    public ResponseEntity<SalonDto> getSalonByOwnerId(@RequestHeader("Authorization") String jwt) throws Exception;
 }

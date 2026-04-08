@@ -1,7 +1,8 @@
-package com.ktsr.service.offering.service.client;
+package com.ktsr.service.client;
 
 
-import com.ktsr.service.offering.DTO.UserDto;
+
+import com.ktsr.DTO.UserDto;
 import org.springframework.cloud.openfeign.FeignClient;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;

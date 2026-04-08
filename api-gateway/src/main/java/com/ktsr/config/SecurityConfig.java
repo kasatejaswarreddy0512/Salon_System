@@ -10,7 +10,14 @@ import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.security.oauth2.server.resource.authentication.JwtAuthenticationConverter;
 import org.springframework.security.oauth2.server.resource.authentication.ReactiveJwtAuthenticationConverterAdapter;
 import org.springframework.security.web.server.SecurityWebFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.reactive.CorsConfigurationSource;
+import org.springframework.web.cors.reactive.UrlBasedCorsConfigurationSource;
 import reactor.core.publisher.Mono;
+
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
 
 @Configuration
 @EnableWebFluxSecurity
@@ -38,8 +45,30 @@ public class SecurityConfig {
 
         }).oauth2ResourceServer(oAuth2ResourceServerSpec -> oAuth2ResourceServerSpec
                 .jwt(jwtSpec -> jwtSpec.jwtAuthenticationConverter(grantAuthoritiesExtractor())));
-        http.csrf(ServerHttpSecurity.CsrfSpec::disable);
+        http.csrf(ServerHttpSecurity.CsrfSpec::disable)
+                .cors(cors -> cors.configurationSource(corsConfigurationSource()) );
         return http.build();
+    }
+
+    private CorsConfigurationSource corsConfigurationSource() {
+
+        CorsConfiguration corsConfiguration= new CorsConfiguration();
+        corsConfiguration.setAllowedOrigins(Arrays.asList(
+                "http://localhost:3000",
+                "http://localhost:5170"
+        ));
+        corsConfiguration.setAllowedMethods(Arrays.asList("GET","POST","PUT","PATCH","DELETE"));
+        corsConfiguration.setAllowedHeaders(Collections.singletonList("*"));
+        corsConfiguration.setExposedHeaders(Collections.singletonList("Authorization"));
+        corsConfiguration.setAllowCredentials(true);
+        corsConfiguration.setMaxAge(3600L);
+
+        UrlBasedCorsConfigurationSource source=new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", corsConfiguration);
+
+
+        return source;
+
     }
 
     private Converter<Jwt, ? extends Mono<? extends AbstractAuthenticationToken>> grantAuthoritiesExtractor() {
@@ -48,6 +77,8 @@ public class SecurityConfig {
                 new KeyCloakConverter());
         return new ReactiveJwtAuthenticationConverterAdapter(jwtAuthenticationConverter);
     }
+
+
 
 
 }

@@ -6,6 +6,7 @@ import com.ktsr.DTO.ServiceDTO;
 import com.ktsr.DTO.UserDto;
 import com.ktsr.entity.Booking;
 import com.ktsr.entity.BookingStatus;
+import com.ktsr.entity.PaymentOrder;
 import com.ktsr.entity.SalonReport;
 import com.ktsr.repository.BookingRepository;
 import com.ktsr.service.BookingService;
@@ -158,5 +159,12 @@ public class BookingServiceImpl implements BookingService {
 
 
         return salonReport;
+    }
+
+    @Override
+    public Booking bookingSuccess(PaymentOrder paymentOrder) {
+        Booking existingBooking=getBookingById(paymentOrder.getBookingId());
+        existingBooking.setStatus(BookingStatus.CONFIRMED);
+        return bookingRepository.save(existingBooking);
     }
 }

@@ -6,6 +6,7 @@ import com.ktsr.DTO.ServiceDTO;
 import com.ktsr.DTO.UserDto;
 import com.ktsr.entity.Booking;
 import com.ktsr.entity.BookingStatus;
+import com.ktsr.entity.PaymentOrder;
 import com.ktsr.entity.SalonReport;
 
 import java.awt.print.Book;
@@ -28,4 +29,5 @@ public interface BookingService {
 
     SalonReport getSalonReport(Long salonId);
 
+    Booking bookingSuccess(PaymentOrder paymentOrder);
 }

@@ -1,5 +1,6 @@
 package com.ktsr.entity;
 
+
 import com.ktsr.DTO.BookingDTO;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -34,7 +35,7 @@ public class Notification {
 
     private LocalDateTime createdAt;
 
-    private BookingDTO booking;
+//    private BookingDTO booking;
 
 
 }

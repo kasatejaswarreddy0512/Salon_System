@@ -13,22 +13,33 @@ spring:
       ddl-auto: update
     database-platform: org.hibernate.dialect.MySQLDialect
 
+  rabbitmq:
+    host: localhost
+    port: 5672
+    username: guest
+    password: guest
+
+
 server:
   port: 8086
 
+
+# Payment Gateway Configurations
 razorpay:
   api:
     key:
     secret:
 
-strpie:
+stripe:
   api:
     key:
 
 
+# Eureka Service Discovery
 eureka:
   instance:
     prefer-ip-address: true
+
   client:
     fetch-registry: true
     register-with-eureka: true

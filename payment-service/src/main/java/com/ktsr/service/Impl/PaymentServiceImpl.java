@@ -6,6 +6,8 @@ import com.ktsr.DTO.UserDto;
 import com.ktsr.entity.PaymentMethod;
 import com.ktsr.entity.PaymentOrder;
 import com.ktsr.entity.PaymentOrderStaus;
+import com.ktsr.messaging.BookingEventProducer;
+import com.ktsr.messaging.NotificationEventProducer;
 import com.ktsr.repository.PaymentOrderRepository;
 import com.ktsr.service.PaymentService;
 import com.razorpay.Payment;
@@ -18,6 +20,7 @@ import com.stripe.model.checkout.Session;
 import com.stripe.param.checkout.SessionCreateParams;
 import lombok.RequiredArgsConstructor;
 import org.json.JSONObject;
+import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +29,9 @@ import org.springframework.stereotype.Service;
 public class PaymentServiceImpl implements PaymentService {
 
     private final PaymentOrderRepository paymentOrderRepository;
+    private final BookingEventProducer bookingEventProducer;
+
+    private final NotificationEventProducer notificationEventProducer;
 
     @Value("{$stripe.api.key}")
     private String stripeSecretKey;
@@ -35,6 +41,8 @@ public class PaymentServiceImpl implements PaymentService {
 
     @Value("{$razorpay.api.sercet}")
     private String razorpayAPiSecret;
+
+
 
     @Override
     public PaymentLinkResponse createOrder(UserDto userDto,
@@ -162,6 +170,13 @@ public class PaymentServiceImpl implements PaymentService {
 
                 if(status.equals("captured")){
                     // will produce kafka event driven arcitechture
+
+                    bookingEventProducer.sentBookingUpdateEvent(paymentOrder);
+                    notificationEventProducer.sendNotification(
+                            paymentOrder.getBookingId(), paymentOrder.getUserId(), paymentOrder.getSalonId());
+
+
+
                     paymentOrder.setStatus(PaymentOrderStaus.SUCCESS);
                     paymentOrderRepository.save(paymentOrder);
                     return true;

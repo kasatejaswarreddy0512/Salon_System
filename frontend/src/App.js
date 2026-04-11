@@ -1,16 +1,19 @@
 import { ThemeProvider } from '@mui/material';
 import './App.css';
 import greenTheme from './theme/greenTheme';
-import SalonDeatils from './Customer/Salon/SalonDetails/SalonDetails';
-// import Home from './Customer/Home/Home';
-
+import CustomerRoutes from './Routes/CustomerRoutes';
+import { Route, Routes } from 'react-router-dom';
+import SalonDashBoard from './Salon/SalonDashBoard';
 
 
 function App() {
   return (
     <ThemeProvider theme={greenTheme}>
-      {/* <Home /> */}
-      <SalonDeatils />
+
+      <Routes>
+        <Route path="/salon-dashboard/*" element={<SalonDashBoard />} />
+        <Route path="*" element={<CustomerRoutes />} />
+      </Routes>
     </ThemeProvider>
 
   );

@@ -50,7 +50,7 @@ public class ReviewController {
         return ResponseEntity.ok(review);
     }
 
-    @DeleteMapping("/reviewId}")
+    @DeleteMapping("/{reviewId}")
     public ResponseEntity<String> deleteReview(@PathVariable Long reviewId,@RequestHeader("Authorization") String jwt) throws Exception {
         UserDto userDto=userFeignClient.getUserProfile(jwt).getBody();
 

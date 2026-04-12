@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 
-@FeignClient("PAYMENT-SERVICE")
+@FeignClient(value = "PAYMENT-SERVICE",url = "http://localhost:8086")
 public interface PaymentFeignClient {
 
     @PostMapping("/api/payments/create")

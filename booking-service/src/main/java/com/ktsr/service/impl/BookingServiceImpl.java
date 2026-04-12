@@ -66,8 +66,8 @@ public class BookingServiceImpl implements BookingService {
         LocalDateTime salonOpenTime = salonDto.getOpeningTime().atDate(bookingStartTime.toLocalDate());
         LocalDateTime salonCloseTime = salonDto.getClosingTime().atDate(bookingStartTime.toLocalDate());
 
-        if (salonOpenTime.isBefore(salonCloseTime) || bookingEndTime.isAfter(salonCloseTime)) {
-            throw new RuntimeException("Booking time must be with in salon working hours");
+        if (bookingStartTime.isBefore(salonOpenTime) || bookingEndTime.isAfter(salonCloseTime)) {
+            throw new RuntimeException("Booking time must be within salon working hours");
         }
 
         for (Booking booking : existingBooking) {
@@ -152,6 +152,7 @@ public class BookingServiceImpl implements BookingService {
 
         SalonReport salonReport = new SalonReport();
         salonReport.setSalonId(salonId);
+        salonReport.setSalonName(salonReport.getSalonName());
         salonReport.setCancelBookings(cancelledBookings.size());
         salonReport.setTotalBookings(totalBookings);
         salonReport.setTotalEarnings(totalEarnings);

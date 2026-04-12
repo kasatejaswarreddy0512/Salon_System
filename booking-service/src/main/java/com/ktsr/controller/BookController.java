@@ -4,6 +4,7 @@ package com.ktsr.controller;
 import com.ktsr.DTO.*;
 import com.ktsr.entity.Booking;
 import com.ktsr.entity.BookingStatus;
+import com.ktsr.entity.PaymentOrder;
 import com.ktsr.entity.SalonReport;
 import com.ktsr.mapper.BookingMapper;
 import com.ktsr.service.BookingService;
@@ -133,8 +134,18 @@ public class BookController {
             throw new RuntimeException("Salon is not found");
         }
         SalonReport salonReport= bookingService.getSalonReport(salonDto.getId());
+        salonReport.setSalonName(salonDto.getName());
 
         return new ResponseEntity<>(salonReport,HttpStatus.OK);
 
+    }
+
+
+    @PostMapping("/payment-success")
+    public ResponseEntity<Booking> paymentSuccess(@RequestBody PaymentOrder paymentOrder) {
+
+        Booking booking = bookingService.bookingSuccess(paymentOrder);
+
+        return new ResponseEntity<>(booking, HttpStatus.OK);
     }
 }

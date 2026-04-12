@@ -49,8 +49,8 @@ const menu = [
         activeIcon: <AccountBalanceWalletIcon className="text-secondary " />,
     },
     {
-        name: "Tansaction",
-        path: "/salon-dashboard/transaction",
+        name: "Tansactions",
+        path: "/salon-dashboard/transactions",
         icon: <ReceiptIcon className="text-primary " />,
         activeIcon: <ReceiptIcon className="text-secondary " />,
     },

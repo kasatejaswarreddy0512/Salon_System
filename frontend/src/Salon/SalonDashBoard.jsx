@@ -1,6 +1,7 @@
 import React from 'react'
 import SalonDrawerList from './Component/SalonDrawerList';
 import NavBar from '../AdminSalon/NavBar';
+import SalonRoutes from '../Routes/SalonRoutes';
 
 const SalonDashBoard = () => {
   return (
@@ -11,6 +12,9 @@ const SalonDashBoard = () => {
       <section className='lg:flex lg:h-[90vh]'>
         <div className='hidden lg:block h-full'>
           <SalonDrawerList />
+        </div>
+        <div className='p-10 w-full lg:w-[80%] overflow-y-auto'>
+          <SalonRoutes />
         </div>
       </section>
 

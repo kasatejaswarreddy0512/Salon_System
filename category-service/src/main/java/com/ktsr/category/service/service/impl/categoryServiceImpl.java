@@ -21,7 +21,7 @@ public class categoryServiceImpl  implements CategoryService {
         Category newCategory = new Category();
         newCategory.setId(category.getId());
         newCategory.setName(category.getName());
-        newCategory.setSalonId(category.getSalonId());
+        newCategory.setSalonId(salonDto.getId());
         newCategory.setImage(category.getImage());
         return categoryRepository.save(newCategory);
     }
@@ -43,8 +43,8 @@ public class categoryServiceImpl  implements CategoryService {
     @Override
     public void deleteCategoryById(Long id, Long salonId) {
         Category category= getCategoryById(id);
-        if (category.getSalonId() == salonId) {
-            throw  new RuntimeException("You don't have the same salonId to delete this Category");
+        if (!category.getSalonId().equals(salonId)) {
+            throw new RuntimeException("You don't have the same salonId to delete this Category");
         }
         categoryRepository.deleteById(id);
     }

@@ -48,53 +48,53 @@ public class SalonServiceImpl implements SalonService {
     }
 
 
-//    @Override
-//    public Salon updateSalon(SalonDto salon, UserDto user, Long salonId) {
-//        Salon existingSalon = salonRepository.findById(salonId).orElseThrow(() -> new RuntimeException("Salon Not Found"));
-//          if(!salonDto.getOwnerId().equals(user.getId()){
-//              throw new RuntimeException("You don't have permission to access this salon");
-//          }
-//        if (existingSalon != null) {
-//            existingSalon.setName(salon.getName());
-//            existingSalon.setEmail(salon.getEmail());
-//            existingSalon.setAddress(salon.getAddress());
-//            existingSalon.setCity(salon.getCity());
-//            existingSalon.setImages(salon.getImages());
-//            existingSalon.setPhoneNumber(salon.getPhoneNumber());
-//            existingSalon.setOpeningTime(salon.getOpeningTime());
-//            existingSalon.setClosingTime(salon.getClosingTime());
-//            existingSalon.setOwnerId(user.getId());
-//            return salonRepository.save(existingSalon);
-//        }
-//        throw new RuntimeException("Salon not found");
-//    }
-
     @Override
-    public Salon updateSalon(String updateJson, UserDto user, Long salonId) {
-
-        Gson gson = new GsonBuilder().setPrettyPrinting().create();
-
-        Salon existingSalon = salonRepository.findById(salonId)
-                .orElseThrow(() -> new RuntimeException("Salon Not Found"));
-
-        try {
-            if (!existingSalon.getOwnerId().equals(user.getId())) {
-                throw new RuntimeException("You don't have permissions to update this salon");
-            }
-            JsonObject existingSalonJson = gson.toJsonTree(existingSalon).getAsJsonObject();
-            JsonObject updates = gson.fromJson(updateJson, JsonObject.class);
-            for (String key : updates.keySet()) {
-                existingSalonJson.add(key, updates.get(key));
-            }
-            Salon updatedSalon = gson.fromJson(existingSalonJson, Salon.class);
-            updatedSalon.setOwnerId(user.getId());
-
-            return salonRepository.save(updatedSalon);
-
-        } catch (Exception e) {
-            throw new RuntimeException("Invalid JSON input");
+    public Salon updateSalon(SalonDto salon, UserDto user, Long salonId) {
+        Salon existingSalon = salonRepository.findById(salonId).orElseThrow(() -> new RuntimeException("Salon Not Found"));
+          if(!existingSalon.getOwnerId().equals(user.getId())){
+              throw new RuntimeException("You don't have permission to access this salon");
+          }
+        if (existingSalon != null) {
+            existingSalon.setName(salon.getName());
+            existingSalon.setEmail(salon.getEmail());
+            existingSalon.setAddress(salon.getAddress());
+            existingSalon.setCity(salon.getCity());
+            existingSalon.setImages(salon.getImages());
+            existingSalon.setPhoneNumber(salon.getPhoneNumber());
+            existingSalon.setOpeningTime(salon.getOpeningTime());
+            existingSalon.setClosingTime(salon.getClosingTime());
+            existingSalon.setOwnerId(user.getId());
+            return salonRepository.save(existingSalon);
         }
+        throw new RuntimeException("Salon not found");
     }
+
+//    @Override
+//    public Salon updateSalon(String updateJson, UserDto user, Long salonId) {
+//
+//        Gson gson = new GsonBuilder().setPrettyPrinting().create();
+//
+//        Salon existingSalon = salonRepository.findById(salonId)
+//                .orElseThrow(() -> new RuntimeException("Salon Not Found"));
+//
+//        try {
+//            if (!existingSalon.getOwnerId().equals(user.getId())) {
+//                throw new RuntimeException("You don't have permissions to update this salon");
+//            }
+//            JsonObject existingSalonJson = gson.toJsonTree(existingSalon).getAsJsonObject();
+//            JsonObject updates = gson.fromJson(updateJson, JsonObject.class);
+//            for (String key : updates.keySet()) {
+//                existingSalonJson.add(key, updates.get(key));
+//            }
+//            Salon updatedSalon = gson.fromJson(existingSalonJson, Salon.class);
+//            updatedSalon.setOwnerId(user.getId());
+//
+//            return salonRepository.save(updatedSalon);
+//
+//        } catch (Exception e) {
+//            throw new RuntimeException("Invalid JSON input");
+//        }
+//    }
 
     @Override
     public void deleteSalon(Long id) {

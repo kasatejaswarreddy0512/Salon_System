@@ -12,7 +12,7 @@ public interface SalonService {
     List<Salon> getSalons();
     Salon getSalon(Long id);
     // Updated method to accept Gson JSON input
-    Salon updateSalon(String updateJson, UserDto user, Long salonId);
+    Salon updateSalon(SalonDto salonDto, UserDto user, Long salonId);
     void deleteSalon(Long id);
     Salon getSalonByOwnerId(Long ownerId);
 //    Salon getSalonByName(String name);

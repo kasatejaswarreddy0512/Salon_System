@@ -35,19 +35,19 @@ public class SalonController {
     }
 
     @GetMapping("/getById/{id}")
-    public ResponseEntity<Salon> getSalon(Long id) {
+    public ResponseEntity<Salon> getSalon(@PathVariable Long id) {
         return new ResponseEntity<>(salonService.getSalon(id), HttpStatus.OK);
     }
 
     @PutMapping("/{id}")
     public ResponseEntity<Salon> updateSalon(
             @PathVariable Long id,
-            @RequestBody String updateJson,
+            @RequestBody SalonDto salonDto,
             @RequestHeader("Authorization") String jwt) throws Exception {
 
         UserDto userDto = userFeignClient.getUserProfile(jwt).getBody();
 
-        Salon updatedSalon = salonService.updateSalon(updateJson, userDto, id);
+        Salon updatedSalon = salonService.updateSalon(salonDto, userDto, id);
         return ResponseEntity.ok(updatedSalon);
     }
 

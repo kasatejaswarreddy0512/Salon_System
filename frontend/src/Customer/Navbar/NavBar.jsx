@@ -49,7 +49,7 @@ const NavBar = () => {
                     </Badge>
                 </IconButton>
 
-                {true ? <div className='flex gap-1 items-center cursor-pointer'>
+                {false ? <div className='flex gap-1 items-center cursor-pointer'>
                     <h1 className='font-semibold text-lg'>Code with Reddy</h1>
 
                     <IconButton
@@ -80,7 +80,7 @@ const NavBar = () => {
                 </div> :
 
 
-                    <IconButton color="primary">
+                    <IconButton color="primary" onClick={() => navigate('/login')}>
                         <AccountCircleIcon sx={{ fontSize: '45px', color: 'primary' }} />
                     </IconButton>}
             </div>

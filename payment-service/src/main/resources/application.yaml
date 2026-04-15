@@ -19,23 +19,18 @@ spring:
     username: guest
     password: guest
 
-
 server:
   port: 8086
 
-
-# Payment Gateway Configurations
 razorpay:
   api:
-    key:
-    secret:
+    key: rzp_test_Scbi0YCALuXXGU
+    secret: ttbAweICgg6olbYuXzL4412E
 
 stripe:
   api:
-    key:
+    key: ""
 
-
-# Eureka Service Discovery
 eureka:
   instance:
     prefer-ip-address: true

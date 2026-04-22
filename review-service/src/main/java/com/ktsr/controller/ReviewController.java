@@ -1,9 +1,11 @@
 package com.ktsr.controller;
 
+import com.ktsr.DTO.ReviewDto;
 import com.ktsr.DTO.ReviewRequest;
 import com.ktsr.DTO.SalonDto;
 import com.ktsr.DTO.UserDto;
 import com.ktsr.entity.Review;
+import com.ktsr.mapper.ReviewMapper;
 import com.ktsr.service.ReviewService;
 import com.ktsr.service.client.SalonFeignClient;
 import com.ktsr.service.client.UserFeignClient;
@@ -34,9 +36,24 @@ public class ReviewController {
     }
 
     @GetMapping("/salon/{salonId}")
-    public ResponseEntity<List<Review>> getReviewsBYSalonId(@PathVariable Long salonId) throws Exception {
-        List<Review> reviews= reviewService.getReviewBySalonId(salonId);
-        return ResponseEntity.ok(reviews);
+    public ResponseEntity<List<ReviewDto>> getReviewsBYSalonId(@PathVariable Long salonId) throws Exception {
+
+        SalonDto salon= salonFeignClient.getSalon(salonId).getBody();
+
+        List<Review> reviews= reviewService.getReviewBySalonId(salon.getId());
+
+        List<ReviewDto> reviewDtos=reviews.stream()
+                .map((review)->{
+                    UserDto user= null;
+                    try {
+                        user=userFeignClient.getUserById(review.getUserId()).getBody();
+                    } catch (Exception e) {
+                        throw new RuntimeException(e);
+                    }
+                    return ReviewMapper.toDto(review,user);
+                }).toList();
+
+        return ResponseEntity.ok(reviewDtos);
     }
 
     @PutMapping("/{reviewId}")

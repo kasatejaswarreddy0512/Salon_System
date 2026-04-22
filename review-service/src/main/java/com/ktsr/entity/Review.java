@@ -32,7 +32,7 @@ public class Review {
     private Long userId;
 
     @CreatedDate
-    private LocalDateTime createdAt;
+    private LocalDateTime createdAt=LocalDateTime.now();
 
 
 

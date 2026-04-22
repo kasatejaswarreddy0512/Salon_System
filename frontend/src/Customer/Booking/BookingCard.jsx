@@ -3,24 +3,23 @@ import ArrowRightAltIcon from '@mui/icons-material/ArrowRightAlt';
 import { Button } from '@mui/material';
 
 
-const BookingCard = () => {
+const BookingCard = ({ item }) => {
     return (
         <div className='p-5 rounded-md bg-slate-100 md:flex  items-center justify-between'>
             <div className='space-y-2'>
-                <h2 className='text-2xl font-bold'>Salon Name</h2>
+                <h2 className='text-2xl font-bold'>{item.salon.name}</h2>
                 <div>
-                    <li>Haircut</li>
-                    <li>Massage therapy</li>
-                    <li>Hair Color</li>
+                    {item.services.map((service) => <li>{service.name}</li>)}
+
                 </div>
                 <div>
-                    <p>Time & Date <ArrowRightAltIcon /> 2023-10-15 </p>
-                    <p>10:00 AM - 11:00 AM</p>
+                    <p>Time & Date <ArrowRightAltIcon /> {item.startTime.split("T")[0]} </p>
+                    <p>{item.startTime.split("T")[1]} - {item.endTime.split("T")[1]}</p>
                 </div>
             </div>
             <div className="space-y-2">
-                <img src="https://wallpapers.com/images/hd/relaxing-back-massage-040s7w89zft4mvzu.jpg" alt="Salon" className='w-28 h-28 rounded-md' />
-                <p className='text-center'>₹1000</p>
+                <img src={item.services[0].image} alt="Salon" className='w-28 h-28 rounded-md' />
+                <p className='text-center'>₹{item.totalPrices}</p>
                 <Button variant="outlined" color="error">
                     Cancelled
                 </Button>

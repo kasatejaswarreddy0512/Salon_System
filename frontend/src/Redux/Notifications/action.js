@@ -56,18 +56,21 @@ export const markNotificationAsRead = ({ notificationId, jwt }) => async (dispat
     dispatch({ type: MARK_NOTIFICATION_AS_READ_REQUEST });
 
     try {
-        const response = await api.get(`${API_URL}/${notificationId}/read`,
+        const response = await api.put(
+            `${API_URL}/${notificationId}/read`,
+            {},
             {
                 headers: { Authorization: `Bearer ${jwt}` },
             }
         );
+
         console.log("mark notification read", response.data);
         dispatch({ type: MARK_NOTIFICATION_AS_READ_SUCCESS, payload: response.data });
     } catch (error) {
         console.log("mark notification as read error ", error);
         dispatch({ type: MARK_NOTIFICATION_AS_READ_FAILURE, payload: error.message });
     }
-}
+};
 
 
 export const addNotification = (notification) => {

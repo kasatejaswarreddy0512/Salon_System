@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import SalonDetail from './SalonDetail';
 import { Button } from '@mui/material';
 import Divider from '@mui/material/Divider';
@@ -19,6 +19,8 @@ const SalonDetails = () => {
     const handleActiveTab = (tabIndex) => {
         setActiveTab(tabIndex);
     };
+
+
 
     return (
         <div className='px-5 lg:px-20'>

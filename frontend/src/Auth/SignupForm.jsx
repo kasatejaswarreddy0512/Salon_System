@@ -2,8 +2,14 @@ import { Button, TextField, Typography } from '@mui/material'
 import { Container } from '@mui/system'
 import { useFormik } from 'formik'
 import React from 'react'
+import { useDispatch } from "react-redux"
+import { useNavigate } from 'react-router-dom'
+import { registerUser } from 'src/Redux/Auth/action'
 
 const SignForm = () => {
+
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
 
     const formik = useFormik(
         {
@@ -15,18 +21,20 @@ const SignForm = () => {
             },
             onSubmit: (values) => {
                 console.log("Submitted ", values);
+                values.username = values.fullName;
+                dispatch(registerUser({ userData: values, navigate }));
             }
         }
     );
 
     return (
-        <Container component={"main"} maxWidth="xs">
-            <div className='space-y-5'>
+        <Container component={"main"} >
+            <div className='space-y-8'>
                 <Typography className='text-center' variant='h5'>
                     Signup
                 </Typography>
 
-                <form className='space-y-5' onSubmit={formik.handleSubmit}>
+                <form className='space-y-2' onSubmit={formik.handleSubmit}>
                     <TextField
                         variant='outlined'
                         fullWidth
@@ -53,12 +61,13 @@ const SignForm = () => {
                         name='password'
                         id='password'
                         label="Enter password"
+                        type="password"
                         onChange={formik.handleChange}
                         value={formik.values.password}
                         required
                     />
                     <Button sx={{ py: '.7rem' }} fullWidth variant='contained' type='submit'>
-                        Register
+                        signup
                     </Button>
 
                 </form>

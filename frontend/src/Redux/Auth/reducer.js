@@ -5,6 +5,7 @@ const initialState = {
     isLoading: false,
     error: null,
     customers: [],
+    jwt: null,
 };
 
 export const authReducers = (state = initialState, action) => {

@@ -4,11 +4,24 @@ import { Avatar, Box } from "@mui/material";
 import Rating from "@mui/material/Rating";
 import IconButton from "@mui/material/IconButton";
 import { Delete } from "@mui/icons-material";
+import { useDispatch, useSelector } from "react-redux";
+import { deleteReview } from "src/Redux/Review/action";
 
-const ReviewCard = () => {
+const ReviewCard = ({ item }) => {
+
+    const dispatch = useDispatch();
+    const { auth } = useSelector(store => store);
+
+    const handleDeleteReview = () => {
+        dispatch(deleteReview({
+            reviewId: item.id,
+            jwt: localStorage.getItem("jwt")
+        }))
+    }
+
     return (
-        <div className="w-full justify-between ">
-            <div className="w-[90%] mx-auto">
+        <div className="flex justify-between ">
+            <div className="w-[90%] ">
                 <Grid
                     container
                     spacing={2}
@@ -22,33 +35,39 @@ const ReviewCard = () => {
                                 sx={{ width: 56, height: 56, bgcolor: "#9155FD" }}
                                 className="text-white"
                             >
-                                A
+                                {item.user.fullName[0]}
                             </Avatar>
                         </Box>
                     </Grid>
 
                     {/* Review Content */}
-                    <Grid item xs={9} md={10}>
+                    <Grid item xs={10} md={10}>
                         <div className="flex flex-col gap-1">
                             <div className="flex items-center justify-between">
-                                <p className="font-semibold text-lg">Code with Reddy</p>
-                                <p className="text-sm opacity-60">08 Apr 2026</p>
+                                <p className="font-semibold text-lg">{item.user.fullName}</p>
+                                <p className=" ml-[170px] text-sm opacity-60">
+                                    {new Date(item.createAt).toLocaleDateString('en-GB', {
+                                        day: '2-digit',
+                                        month: 'long',
+                                        year: 'numeric'
+                                    })}
+                                </p>
                             </div>
 
-                            <Rating readOnly value={4.5} name="half-rating" precision={0.5} size="small" />
+                            <Rating readOnly value={item.rating} name="half-rating" precision={0.5} size="small" />
 
                             <p className="text-sm text-gray-600">
-                                Very good service and professional staff. Highly recommended!
+                                {item.reviewText}
                             </p>
                         </div>
                     </Grid>
 
                     {/* Delete Button */}
-                    <Grid item xs={1} className="flex justify-end">
-                        <IconButton size="small">
-                            <Delete sx={{ color: "error.main" }} />
-                        </IconButton>
-                    </Grid>
+
+                    {item.user.id === auth.user?.id && <IconButton size="small" onClick={handleDeleteReview}>
+                        <Delete sx={{ color: "error.main" }} />
+                    </IconButton>}
+
                 </Grid>
             </div>
         </div>

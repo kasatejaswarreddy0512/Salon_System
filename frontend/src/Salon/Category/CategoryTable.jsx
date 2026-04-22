@@ -6,6 +6,12 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
+import { useDispatch, useSelector } from 'react-redux';
+import { useEffect } from 'react';
+import { store } from 'src/Redux/Store';
+import { getCategoriesBySalon } from 'src/Redux/Category/action';
+import { IconButton } from '@mui/material';
+import { Edit } from '@mui/icons-material';
 
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
     [`&.${tableCellClasses.head}`]: {
@@ -27,25 +33,20 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
     },
 }));
 
-function createData(
-    name,
-    calories,
-    fat,
-    carbs,
-    protein,
-) {
-    return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
-
 export default function CategoryTable() {
+
+    const dispatch = useDispatch();
+    const { salon, category } = useSelector(store => store);
+
+    useEffect(() => {
+        if (salon.salon) {
+            dispatch(getCategoriesBySalon({
+                jwt: localStorage.getItem("jwt"),
+                salonId: salon?.salon?.id
+            }))
+        }
+    }, [salon.salon])
+
     return (
         <>
 
@@ -60,15 +61,21 @@ export default function CategoryTable() {
                         </TableRow>
                     </TableHead>
                     <TableBody>
-                        {rows.map((row) => (
-                            <StyledTableRow key={row.name}>
+                        {category.categories.map((item) => (
+                            <StyledTableRow key={item.name}>
                                 <StyledTableCell component="th" scope="row">
                                     <div className='flex  gap-1 flex-wrap items-center'>
-                                        <img className="w-22 h-16 rounded-md object-cover" src="https://img.freepik.com/free-photo/interior-latino-hair-salon_23-2150555185.jpg?semt=ais_hybrid&w=740&q=80" alt="Service" />
+                                        <img className="w-22 h-16 rounded-md object-cover" src={item?.image} alt="Service" />
                                     </div>
                                 </StyledTableCell>
-                                <StyledTableCell align="center">{row.calories}</StyledTableCell>
-                                <StyledTableCell align="center">{row.fat}</StyledTableCell>
+                                <StyledTableCell align="center" sx={{ fontWeight: "bold" }}>
+                                    {item?.name}
+                                </StyledTableCell>
+                                <StyledTableCell align="center">
+                                    <IconButton>
+                                        <Edit />
+                                    </IconButton>
+                                </StyledTableCell>
 
                             </StyledTableRow>
                         ))}

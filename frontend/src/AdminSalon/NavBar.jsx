@@ -4,12 +4,15 @@ import MenuIcon from '@mui/icons-material/Menu';
 import NotificationsActiveIcon from '@mui/icons-material/NotificationsActive';
 import Badge from '@mui/material/Badge';
 import Drawer from '@mui/material/Drawer';
+import { useDispatch } from 'react-redux';
+import { useNavigate } from 'react-router-dom';
 
 
 const NavBar = ({ DrawerList }) => {
 
     const [open, setOpen] = useState(false);
-
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
     const toggleDrawer = (newOpen) => {
         setOpen(newOpen);
     };
@@ -25,7 +28,7 @@ const NavBar = ({ DrawerList }) => {
                     <MenuIcon color="primary" />
                 </IconButton>
 
-                <h1 className="text-xl font-bold cursor-pointer">
+                <h1 className="text-primary text-xl font-bold cursor-pointer" onClick={() => navigate("/")}>
                     Salon Booking
                 </h1>
             </div>

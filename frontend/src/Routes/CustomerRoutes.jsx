@@ -6,16 +6,18 @@ import Notifications from '../Customer/Notification/Notifications';
 import SalonDeatils from '../Customer/Salon/SalonDetails/SalonDetails';
 import NavBar from '../Customer/Navbar/NavBar';
 import NotFound from '../NotFound/NotFound';
+import PaymentSuccess from 'src/Customer/Payment/PaymentSuccess';
 
 const CustomerRoutes = () => {
     return (
-        <div>
+        <div className=''>
             <NavBar />
             <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/notifications" element={<Notifications />} />
                 <Route path="/bookings" element={<Bookings />} />
                 <Route path="/salon/:id" element={<SalonDeatils />} />
+                <Route path='/payment-success/:id' element={<PaymentSuccess />} />
                 <Route path="*" element={<NotFound />} />
             </Routes>
         </div>

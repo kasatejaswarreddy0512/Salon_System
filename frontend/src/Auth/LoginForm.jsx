@@ -19,7 +19,7 @@ const LoginForm = () => {
             },
             onSubmit: (values) => {
                 console.log("Submitted ", values);
-                dispatch(loginUser({ email: values.email, password: values.password, navigate }))
+                dispatch(loginUser({ data: values, navigate }))
             }
         }
     );
@@ -48,6 +48,7 @@ const LoginForm = () => {
                         name='password'
                         id='password'
                         label="Enter password"
+                        type="password"
                         onChange={formik.handleChange}
                         value={formik.values.password}
                         required

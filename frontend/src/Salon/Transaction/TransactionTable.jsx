@@ -5,29 +5,26 @@ import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
-
-function createData(
-    name: string,
-    calories: number,
-    fat: number,
-    carbs: number,
-    protein: number,
-) {
-    return { name, calories, fat, carbs, protein };
-}
-
-const rows = [
-    createData('Frozen yoghurt', 159, 6.0, 24, 4.0),
-    createData('Ice cream sandwich', 237, 9.0, 37, 4.3),
-    createData('Eclair', 262, 16.0, 24, 6.0),
-    createData('Cupcake', 305, 3.7, 67, 4.3),
-    createData('Gingerbread', 356, 16.0, 49, 3.9),
-];
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchSalonBookings } from 'src/Redux/Booking/action';
+import { useEffect } from 'react';
 
 export default function TransactionTable() {
+    const { booking, salon } = useSelector((store) => store);
+    const dispatch = useDispatch();
+
+    useEffect(() => {
+        const jwt = localStorage.getItem("jwt");
+
+        if (salon?.salon && jwt) {
+            dispatch(fetchSalonBookings(jwt));
+        }
+    }, [dispatch, salon?.salon]);
+
     return (
         <>
             <h1 className="text-xl font-bold mb-4 pb-5">Transactions</h1>
+
             <TableContainer component={Paper}>
                 <Table sx={{ minWidth: 650 }} aria-label="simple table">
                     <TableHead>
@@ -36,25 +33,26 @@ export default function TransactionTable() {
                             <TableCell align="right">Customer Details</TableCell>
                             <TableCell align="right">Booking</TableCell>
                             <TableCell align="right">Amount</TableCell>
-
                         </TableRow>
                     </TableHead>
+
                     <TableBody>
-                        {rows.map((row) => (
+                        {booking?.bookings?.map((item) => (
                             <TableRow
-                                key={row.name}
+                                key={item.id}
                                 sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
                             >
                                 <TableCell component="th" scope="row">
-                                    {row.name}
+                                    {item.startTime?.split("T")[0]}
                                 </TableCell>
-                                <TableCell className=" space-y-2 justify-center" align="right">
-                                    <p>Full Name: Code with reddy</p>
-                                    <p>Email: codewithreddy@example.com</p>
-                                </TableCell>
-                                <TableCell align="right">{row.fat}</TableCell>
-                                <TableCell align="right">{row.carbs}</TableCell>
 
+                                <TableCell align="right">
+                                    <p>Full Name: {item.user?.fullName}</p>
+                                    <p>Email: {item.user?.email}</p>
+                                </TableCell>
+
+                                <TableCell align="right">{item.id}</TableCell>
+                                <TableCell align="right">₹{item.totalPrices}</TableCell>
                             </TableRow>
                         ))}
                     </TableBody>

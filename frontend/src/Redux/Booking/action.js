@@ -11,11 +11,12 @@ export const createBooking = ({ jwt, salonId, bookingData }) => async (dispatch)
         const { data } = await api.post(API_BASE_URL, bookingData,
             {
                 headers: { Authorization: `Bearer ${jwt}` },
-                params: { salonId, paymentMethod: RAZORPAY },
+                params: { salonId, paymentMethod: "RAZORPAY" },
             }
         );
-        window.location.href = data.payment_link_url
         console.log("create booking", data);
+        window.location.href = data.payment_link_url
+
         dispatch({ type: CREATE_BOOKINGS_SUCCESS, payload: data })
     } catch (error) {
         console.log("error creating booking ", error);

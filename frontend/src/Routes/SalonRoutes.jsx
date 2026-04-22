@@ -1,6 +1,5 @@
 import React from 'react'
 import { Route, Routes as Rourtes } from 'react-router-dom';
-import HomePage from '../Salon/Home/HomePage';
 import CreateServiceForm from '../Salon/Services/CreateServiceForm';
 import Notifications from '../Customer/Notification/Notifications';
 import Payment from '../Salon/Payment/Payment';
@@ -9,6 +8,7 @@ import ServiceTable from '../Salon/Services/ServiceTable';
 import TransactionTable from '../Salon/Transaction/TransactionTable';
 import Category from '../Salon/Category/Category';
 import Profile from '../Salon/Profile/Profile';
+import HomePage from 'src/Salon/SalonDashboard/HomePage';
 
 
 const SalonRoutes = () => {

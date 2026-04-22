@@ -57,7 +57,6 @@ export const deleteReview = ({ reviewId, jwt }) => async (dispatch) => {
     dispatch({ type: DELETE_REVIEW_REQUEST });
     try {
         const resposnse = await api.delete(`${BASE_URL}/${reviewId}`,
-            reviewData,
             {
                 headers: { Authorization: `Bearer ${jwt}` }
             });

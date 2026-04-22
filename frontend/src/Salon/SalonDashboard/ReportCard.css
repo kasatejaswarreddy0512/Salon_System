@@ -1,0 +1,35 @@
+.reportCard{
+    transition: box-shadow 300ms cubic-bezier(0.4,0,0.2,1) 0ms;
+    background-image: none;
+    border: none rgb(227, 232, 239);
+    background-color: rgb(9, 31, 60);
+    color: rgb(236, 239, 241);
+    overflow: hidden;
+    position: relative;
+}
+
+.reportCard::before {
+    content: "";
+    position: absolute;
+    width: 210px;
+    height: 214px;
+    background: linear-gradient(140.9deg,
+                rgba(133, 145, 161, 0.5) -14.02%,
+                rgba(175, 175, 175, 0.5) -11.02%);
+    border-radius: 50%  ;
+    top: -160px;
+    right: -130px;
+}
+
+
+.reportCard::after {
+    content: "";
+    position: absolute;
+    width: 210px;
+    height: 214px;
+    background: linear-gradient(210.04deg, rgb(133, 145, 161,0.2) -50.94%, rgb(175, 189, 189,0.2) -11.02%);
+    border-radius: 50%;
+    top: -30px;
+    right: -180px;
+}
+

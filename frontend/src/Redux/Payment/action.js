@@ -2,7 +2,7 @@ import api from "src/Config/api"
 import { PROCEED_PAYMENT_FAILURE, PROCEED_PAYMENT_REQUEST, PROCEED_PAYMENT_SUCCESS } from "./actionType"
 
 
-export const paymentSuccess = ({ paymentId, paymentLinkId, jwt }) => async (dispatch) => {
+export const paymentSuccessAction = ({ paymentId, paymentLinkId, jwt }) => async (dispatch) => {
     dispatch({ type: PROCEED_PAYMENT_REQUEST })
 
     try {

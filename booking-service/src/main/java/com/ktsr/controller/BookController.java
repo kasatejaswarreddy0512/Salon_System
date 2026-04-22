@@ -53,7 +53,10 @@ public class BookController {
 
         Booking booking=bookingService.createBooking(bookingRequest, userDto, salonDto,serviceDTOSet);
 
-        BookingDTO bookingDTO = BookingMapper.toDto(booking);
+        Set<ServiceDTO> services= serviceOfferingFeignClient.getServicesBySalonIds(booking.getServiceIds()).getBody();
+        UserDto customer=userFeignClient.getUserById(booking.getCustomerId()).getBody();
+
+        BookingDTO bookingDTO = BookingMapper.toDto(booking,services,customer,salonDto);
 
          PaymentLinkResponse response= paymentFeignClient.createPaymentLink(bookingDTO, paymentMethod, jwt).getBody();
 
@@ -88,24 +91,37 @@ public class BookController {
     }
 
     @GetMapping("/{bookingId}")
-    public ResponseEntity<Booking> getBookingById(@PathVariable Long bookingId){
+    public ResponseEntity<BookingDTO> getBookingById(@PathVariable Long bookingId){
         Booking booking= bookingService.getBookingById(bookingId);
-        return new ResponseEntity<>(booking,HttpStatus.OK);
+
+        Set<ServiceDTO> services= serviceOfferingFeignClient.getServicesBySalonIds(booking.getServiceIds()).getBody();
+        UserDto customer=userFeignClient.getUserById(booking.getCustomerId()).getBody();
+        SalonDto salon=salonFeignClient.getSalon(booking.getSalonId()).getBody();
+
+        return  ResponseEntity.ok(BookingMapper.toDto(booking,services,customer,salon));
     }
 
     private  Set<BookingDTO>  getBookingDTOs(List<Booking> bookings){
         return bookings.stream()
                 .map(booking -> {
-                    return BookingMapper.toDto(booking);
+                    Set<ServiceDTO> services= serviceOfferingFeignClient
+                            .getServicesBySalonIds(booking.getServiceIds()).getBody();
+                    SalonDto salonDto = salonFeignClient.getSalon(booking.getSalonId()).getBody();
+                    UserDto user= userFeignClient.getUserById(booking.getCustomerId()).getBody();
+                    return BookingMapper.toDto(booking,services, user, salonDto);
                 }).collect(Collectors.toSet());
     }
 
 
     @PutMapping("/{bookingId}/status")
-    public ResponseEntity<Booking> updateBooking(@PathVariable Long bookingId,
+    public ResponseEntity<BookingDTO> updateBooking(@PathVariable Long bookingId,
                                                  @RequestParam BookingStatus status){
         Booking booking= bookingService.updateBooking(status,bookingId);
-        return new ResponseEntity<>(booking,HttpStatus.OK);
+        Set<ServiceDTO> services= serviceOfferingFeignClient.getServicesBySalonIds(booking.getServiceIds()).getBody();
+        UserDto customer=userFeignClient.getUserById(booking.getCustomerId()).getBody();
+        SalonDto salon=salonFeignClient.getSalon(booking.getSalonId()).getBody();
+
+        return  ResponseEntity.ok(BookingMapper.toDto(booking,services,customer,salon));
     }
 
     @GetMapping("/slot/salon/{salonId}/date/{date}")
@@ -148,4 +164,7 @@ public class BookController {
 
         return new ResponseEntity<>(booking, HttpStatus.OK);
     }
+
+
+
 }

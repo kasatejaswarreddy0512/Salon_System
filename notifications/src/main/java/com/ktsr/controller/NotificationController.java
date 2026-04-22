@@ -27,21 +27,23 @@ public class NotificationController {
     }
 
     @GetMapping("/user/{userId}")
-    public ResponseEntity<List<Notification>> getNotificationsByUserId(@PathVariable Long userId) {
+    public ResponseEntity<List<NotificationDto>> getNotificationsByUserId(@PathVariable Long userId) {
 
         List<Notification> notifications = notificationService.getNotificationsByUserId(userId);
 
         List<NotificationDto> notificationDtos = notifications.stream()
                 .map(notification -> {
-                    BookingDTO bookingDTO= null;
+                    BookingDTO bookingDTO = null;
                     try {
-                       bookingDTO= bookingFeignClient.getBookingById(notification.getBookingId()).getBody();
-                    }catch (Exception e){
-                        throw new RuntimeException(e.getMessage());
+                        bookingDTO = bookingFeignClient.getBookingById(notification.getBookingId()).getBody();
+                    } catch (Exception e) {
+                        System.err.println("Failed to fetch booking for bookingId=" + notification.getBookingId());
                     }
                     return NotificationMapper.toDto(notification, bookingDTO);
-                }).collect(Collectors.toList());
-        return ResponseEntity.ok(notifications);
+                })
+                .collect(Collectors.toList());
+
+        return ResponseEntity.ok(notificationDtos);
     }
 
 
@@ -53,6 +55,12 @@ public class NotificationController {
 
         return ResponseEntity.ok(NotificationMapper.toDto(notification,bookingDTO));
     }
+
+
+//    @PostMapping("/dummy")
+//    public ResponseEntity<?> dummyController(@RequestBody Notification notification) {
+//        return ResponseEntity.ok(notificationService.createNotification(notification));
+//    }
 
 
 }
